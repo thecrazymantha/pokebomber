@@ -33,7 +33,7 @@ function boum(bombe){
   var rMax = 2;
   var rTop = rBot = rL = rR = 1;
   var ended = false;
-  
+
   // Explosion Top
   while (!ended && rTop <= rMax){
     if (hit(game, bombe.x, bombe.y - rTop)){
@@ -41,7 +41,7 @@ function boum(bombe){
     }
     rTop ++;
   }
-  
+
   // Explosion Left
   ended = false;
   while (!ended && rL <= rMax){
@@ -50,7 +50,7 @@ function boum(bombe){
     }
     rL ++;
   }
-  
+
   // Explosion Bot
   ended = false;
   while (!ended && rBot <= rMax){
@@ -59,7 +59,7 @@ function boum(bombe){
     }
     rBot ++;
   }
-  
+
   // Explosion Rigth
   ended = false;
   while (!ended && rR <= rMax){
@@ -73,17 +73,17 @@ function boum(bombe){
 function hit(game, x, y){
   // Vérification Map
   if (x <= 0 || x >= 15 || y <= 0 || y >= 9) return true;
-  
+
   // Vérification Mur
   if (game.wall[y][x]) return true;
-  
+
   // Casse Brique ?
   if (game.block[y][x]){
     game.block[y][x] = 0;
     Games.update(game._id, {$set: {"block":game.block}});
     return true;
   }
-  
+
   // Other Ball ?
   var bombes = Bombes.find({"gameID": game._id}).fetch();
   for (var b in bombes){
@@ -92,7 +92,7 @@ function hit(game, x, y){
       return true;
     }
   }
-  
+
   // Players
   var players = Players.find({"gameID": game._id, "alive": true}).fetch();
   var countAlive = 0;
@@ -101,17 +101,23 @@ function hit(game, x, y){
       Players.update(players[p]._id, {$set:{
           "alive" : false
         }
+
       });
+
     }
     countAlive ++;
   }
-  
+
   if (countAlive <= 1){
     Games.update(game._id, {$set:{
       "ended" : true
     }});
+
+    console.log("t'es mort");
+    game.init();
+
   }
-  
+
   return false;
 }
 
@@ -123,24 +129,24 @@ function updatePlayers(){
     // En mouvement ?
     var moveX = players[p].nextX - players[p].lastX;
     var moveY = players[p].nextY - players[p].lastY;
-    
+
     if (moveX != 0){
       players[p].x += players[p].speed*moveX;
-      
+
       if (Math.abs(players[p].nextX - players[p].x) <= players[p].speed/2){
         players[p].x = players[p].lastX = players[p].nextX;
       }
     }
-    
+
     if (moveY != 0){
       players[p].y += players[p].speed*moveY;
-      
+
       if (Math.abs(players[p].nextY - players[p].y) <= players[p].speed/2){
         players[p].y = players[p].lastY = players[p].nextY;
       }
     }
-    
-    
+
+
     Players.update(players[p]._id, {$set:{
       x : players[p].x,
       y : players[p].y,
