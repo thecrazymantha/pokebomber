@@ -5,6 +5,8 @@ Template.game.onRendered(function(){
 Game = function (){
   // var data = Games.find({player.userID : Meteor.userID}).fetch()[0];
   var data;
+  var players;
+  var balls;
   
   // Canvas
   var layer1 = document.querySelector("#L_fixe");
@@ -18,7 +20,7 @@ Game = function (){
   var tileSize = 16;
   var objSize = tileSize * 2;
   
-      
+  var pokeball;    
   var pokeTiles = [];
   
   
@@ -29,7 +31,8 @@ Game = function (){
   // Methodes
   function init () {
     // Chargement des ressources
-    data = Games.find().fetch()[0];
+    data = Games.findOne();
+    players = Players.find().fetch();
     
     var ressources = [];
     ressources.push({
@@ -37,12 +40,18 @@ Game = function (){
       src : "ressources/img/tiles/grass_00.png"
     });
     
-    tileset = ressources[ressources.length -1].img;
+	ressources.push({
+      img : new Image(),
+      src : "ressources/img/pokemons/pokeball.png"
+    });
+	
+    tileset = ressources[0].img;
+    pokeball = ressources[1].img;
     
-    for (var p in data.player){
+    for (var p in players){
       ressources.push({
         img : new Image(),
-        src : "ressources/img/pokemons/" + data.player[p].pokeID + ".png"
+        src : "ressources/img/pokemons/" + players[p].pokeID + ".png"
       });
       pokeTiles[p] = ressources[ressources.length -1].img;
     }
@@ -66,7 +75,7 @@ Game = function (){
       }  else if (event.keyCode === 32) {  
         inputBombe = true;
         
-      }  
+      }
     }, false);  
  
     window.addEventListener('keyup', function(event){  
@@ -104,13 +113,13 @@ Game = function (){
     var act = action.axeX != 0 || action.axeY != 0 || action.bombe;
 
     if (act){
-      console.log(action);
+      // console.log(action);
       Meteor.call('actionInsert', action, function(error, result) {
       // affiche l'erreur à l'utilisateur et s'interrompt
         if (!result){
-          console.log("error");
+          console.log("Erreur envoie action !");
         } else {
-          console.log(result._id);
+          // console.log(result._id);
         }
       });
     }
@@ -160,16 +169,27 @@ Game = function (){
   }
   
   var drawPoke = function () {
-    for (var p in data.player){
-      ctx.drawImage(pokeTiles[p], 0, data.player[p].orient * objSize, objSize, objSize, (data.player[p].x * objSize), (data.player[p].y * objSize), objSize, objSize);
+    for (var p in players){
+      if (players[p].alive)
+        ctx.drawImage(pokeTiles[p], 0, players[p].orient * objSize, objSize, objSize, (players[p].x * objSize), (players[p].y * objSize), objSize, objSize);
     }
   }
 
+  var drawBall = function () {
+	  for (var b in balls){
+		  ctx.drawImage(pokeball, 0,0, 40,40, balls[b].x * objSize, balls[b].y * objSize, objSize, objSize);
+	  }
+  }
   
   var gameLoop = function() {  
-    data = Games.find().fetch()[0];
+    data = Games.findOne();
+    balls = Bombes.find().fetch();
+    players = Players.find().fetch();
+    
     ctx.clearRect(0,0, layer2.width, layer2.height);
+    
     drawBlock ();
+    drawBall ();
     drawPoke ();
     
     // check moves
