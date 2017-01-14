@@ -1,0 +1,66 @@
+<template name="picksRoom">
+  {{#if allRdy}}
+    <div class="section container center">
+      <div class="">
+        <h2 class="header">La partie est lancée !!</h2>
+      </div>
+    </div>
+    <div class="center">
+      <a class="btn waves-effect" href="{{pathFor route='game'}}">Go play !</a>
+    </div>
+
+  {{else}}
+    {{#if picksRdy}}
+      <div class="section container center">
+        <div class="">
+          <h2 class="header">Sélectionner votre pokemon</h2>
+        </div>
+      </div>
+      <div class="carousel">
+        {{#each pokemon}}
+          {{> pokeCard}}
+        {{/each}}
+      </div>
+      <div class="center">
+        {{#if isRdy}}
+          <p>En attente des autres joueurs</p>
+        {{else}}
+          <a class="pokepicker btn waves-effect">Sélectionner</a>
+        {{/if}}
+      </div>
+      
+      <ul class="collection container">
+        {{#each players}}
+          {{> picksList}}
+        {{/each}}
+      </ul>
+      
+    {{else}}
+      <p> Waiting for Players...</p>
+    
+    {{/if}}
+  {{/if}}
+</template>
+
+<template name="pokeCard">
+  <div class="carousel-item">
+    <img src="ressources/img/portraitPicks/{{num}}.png">
+    <input name="num" type="hidden" value="{{num}}">
+    <input name="nom" type="hidden" value="{{nom}}">
+  </div>
+</template>
+
+<template name="picksList">
+  <li class="collection-item avatar">
+    <img src="ressources/img/portraitPicks/min_{{poke}}.png" alt="" class="circle">
+    <span class="title">{{username}}</span>
+    <p>
+      {{pokeNom}}
+    </p>
+    {{#if rdy}}
+      <span class="secondary-content green-text">Ready</span>
+    {{else}}
+      <span class="secondary-content red-text">Picking</span>
+    {{/if}}
+  </li>
+</template>
