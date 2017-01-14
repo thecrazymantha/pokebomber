@@ -1,10 +1,12 @@
-Template.game.onRendered(function() {
+Template.game.onRendered(function(){
   Game();
 });
 
 Game = function (){
   // var data = Games.find({player.userID : Meteor.userID}).fetch()[0];
-  var data = Games.find().fetch()[0];
+  var data;
+  var players;
+  var balls;
   
   // Canvas
   var layer1 = document.querySelector("#L_fixe");
@@ -18,26 +20,109 @@ Game = function (){
   var tileSize = 16;
   var objSize = tileSize * 2;
   
+  var pokeball;    
+  var pokeTiles = [];
+  
+  
+  // Game Mechanics
+  var inputState;
+  var inputBombe = false;
+  
   // Methodes
   function init () {
     // Chargement des ressources
+    data = Games.findOne();
+    players = Players.find().fetch();
+    
     var ressources = [];
     ressources.push({
       img : new Image(),
       src : "ressources/img/tiles/grass_00.png"
     });
     
-    tileset = ressources[ressources.length -1].img;
+	ressources.push({
+      img : new Image(),
+      src : "ressources/img/pokemons/pokeball.png"
+    });
+	
+    tileset = ressources[0].img;
+    pokeball = ressources[1].img;
     
-    for (var p in data.player){
+    for (var p in players){
       ressources.push({
         img : new Image(),
-        src : "ressources/img/pokemons/" + data.player[p].pokeID + ".png"
+        src : "ressources/img/pokemons/" + players[p].pokeID + ".png"
       });
-      data.player[p].img = ressources[ressources.length -1].img;
+      pokeTiles[p] = ressources[ressources.length -1].img;
     }
     
-    Loader(ressources, [gameLoop, drawMap]);
+    Loader(ressources, [drawMap]);
+    
+    // Keys listener
+    window.addEventListener('keydown', function(event){  
+      if (event.keyCode === 37) {  
+        inputState = 37;
+        
+      } else if (event.keyCode === 38) {  
+        inputState = 38;
+        
+      } else if (event.keyCode === 39) {  
+        inputState = 39;
+        
+      } else if (event.keyCode === 40) {  
+        inputState = 40;
+        
+      }  else if (event.keyCode === 32) {  
+        inputBombe = true;
+        
+      }
+    }, false);  
+ 
+    window.addEventListener('keyup', function(event){  
+      if (event.keyCode === inputState) {  
+        inputState = false;   
+      } else if (event.keyCode === 32) {  
+        inputBombe = false;  
+      }
+      
+    }, false);   
+    
+  }
+  
+  function controlHandler () {
+    // Move
+    if (!inputState && !inputBombe) return;
+    
+    var action = {
+      gameID : data._id,
+      userID : 0,
+      axeX : 0,
+      axeY : 0,
+      bombe: inputBombe
+    };
+    
+    if (inputState != false){
+      switch (inputState){
+        case 37: action.axeX -= 1; break; // Left
+        case 38: action.axeY -= 1; break; // Up
+        case 39: action.axeX += 1; break; // Right
+        case 40: action.axeY += 1; break; // Down
+      }
+    }    
+    
+    var act = action.axeX != 0 || action.axeY != 0 || action.bombe;
+
+    if (act){
+      // console.log(action);
+      Meteor.call('actionInsert', action, function(error, result) {
+      // affiche l'erreur à l'utilisateur et s'interrompt
+        if (!result){
+          console.log("Erreur envoie action !");
+        } else {
+          // console.log(result._id);
+        }
+      });
+    }
   }
   
   var drawMap = function() {
@@ -59,7 +144,6 @@ Game = function (){
     }
     
     drawWall();
-    gameLoop();
   }
   
   var drawWall = function () {
@@ -70,6 +154,8 @@ Game = function (){
         }
       }
     }
+    
+    gameLoop();
   }
   
   var drawBlock = function () {
@@ -83,14 +169,31 @@ Game = function (){
   }
   
   var drawPoke = function () {
-    for (var p in data.player){
-      ctx.drawImage(data.player[p].img, 0, data.player[p].orient * objSize, objSize, objSize, (data.player[p].x * objSize), (data.player[p].y * objSize), objSize, objSize);
+    for (var p in players){
+      if (players[p].alive)
+        ctx.drawImage(pokeTiles[p], 0, players[p].orient * objSize, objSize, objSize, (players[p].x * objSize), (players[p].y * objSize), objSize, objSize);
     }
   }
+
+  var drawBall = function () {
+	  for (var b in balls){
+		  ctx.drawImage(pokeball, 0,0, 40,40, balls[b].x * objSize, balls[b].y * objSize, objSize, objSize);
+	  }
+  }
   
-  var gameLoop = function() {
+  var gameLoop = function() {  
+    data = Games.findOne();
+    balls = Bombes.find().fetch();
+    players = Players.find().fetch();
+    
+    ctx.clearRect(0,0, layer2.width, layer2.height);
+    
     drawBlock ();
+    drawBall ();
     drawPoke ();
+    
+    // check moves
+    controlHandler();
     
     requestAnimationFrame(gameLoop);
   }
