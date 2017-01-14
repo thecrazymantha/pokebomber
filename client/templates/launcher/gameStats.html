@@ -1,4 +1,32 @@
 <template name="gameStats">
   {{> menu}}
+  <div class="panel panel-info">
+
+    <div class="panel-heading"><span class="title">Statistiques générales</span></div>
+
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-6 col-md-4">
+          <h3>Parties</h3>
+          {{> gameList}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-8">
+          <div class="panel-heading"><span class="title"><h2>Statistiques</h2></span></div>
+          <div class="panel-body">
+
+            <u> Gagnant :</u>
+            <p id='winner'> --- </p>
+            <br/>
+            <u>Durée :</u>
+            <p id='time'> --- </p>
+
+
+          </div>
+        </div>
+
+      </div>
+
+</div>
+</div>
 
 </template>

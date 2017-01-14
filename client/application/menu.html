@@ -4,13 +4,13 @@
 
   <!--  <nav class="navbar navbar-default  am-top-header" >-->
 
-  <div class="panel panel-info">
+  <div class="panel panel-primary">
     <div class="panel-body">
       <ul class="nav nav-pills nav-justified">
-        <li role="presentation"><a href="{{pathFor route='gamesstat'}}">Général</a></li>
-        <li role="presentation"><a href="{{pathFor route='gameStats'}}">Parties</a></li>
-        <li role="presentation"><a href="{{pathFor route='playerStats'}}">Profile</a></li>
-        <li role="presentation"><a href="{{pathFor route='rank'}}">Classement</a></li>
+        <li role="presentation" class="{{#if isCurrentPage 'gamesstat'}}active{{/if}}"><a href="{{pathFor route='gamesstat'}}">Général</a></li>
+        <li role="presentation" class="{{#if isCurrentPage 'gameStats'}}active{{/if}}"><a href="{{pathFor route='gameStats'}}">Parties</a></li>
+        <li role="presentation" class="{{#if isCurrentPage 'playerStats'}}active{{/if}}" ><a href="{{pathFor route='playerStats'}}">Profile</a></li>
+        <li role="presentation" class="{{#if isCurrentPage 'rank'}}active{{/if}}"><a href="{{pathFor route='rank'}}">Classement</a></li>
       </ul>
     </div>
 

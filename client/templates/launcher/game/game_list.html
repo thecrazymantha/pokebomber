@@ -1,0 +1,9 @@
+<template name="gameList">
+  <div class="game">
+    {{#each games}}
+      {{> gameItem}}
+    {{else}}
+      <li class="placeholder">Pas de partie </li>
+    {{/each}}
+  </div>
+</template>
