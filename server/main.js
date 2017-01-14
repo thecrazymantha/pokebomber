@@ -110,7 +110,7 @@ function hit(game, x, y){
 
   if (countAlive <= 1){
     Games.update(game._id, {$set:{
-      "ended" : true
+      "ended" : true,
     }});
 
     console.log("t'es mort");
