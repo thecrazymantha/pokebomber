@@ -3,7 +3,6 @@ Template.game.onRendered(function(){
 });
 
 Game = function (){
-  // var data = Games.find({player.userID : Meteor.userID}).fetch()[0];
   var data;
   var players;
   var balls;
@@ -95,7 +94,7 @@ Game = function (){
     
     var action = {
       gameID : data._id,
-      userID : 0,
+      userID : Meteor.userId(),
       axeX : 0,
       axeY : 0,
       bombe: inputBombe
