@@ -1,5 +1,7 @@
 Meteor.publish('games', function() {
   var p = Players.findOne({userID : this.userId});
+  if (p == null) return Games.find(0);
+  
   return Games.find(p.gameID);
 });
 

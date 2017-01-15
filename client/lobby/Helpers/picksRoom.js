@@ -7,6 +7,9 @@ Template.picksRoom.helpers( {
   },
   "isRdy": function() {
     var pick = Picks.findOne();
+    
+    if (pick == null) return false;
+    
     for (var p in pick.players){
       if (pick.players[p].userID == Meteor.userId()){
         return pick.players[p].rdy;
@@ -15,10 +18,13 @@ Template.picksRoom.helpers( {
     return false;
   },
   "allRdy": function () {
-    return Games.find().count != 0;
+    return Games.find().count() != 0;
   },
   "players": function() {
     var pick = Picks.findOne();
+    
+    if (pick == null) return false;
+    
     return pick.players;
   }
 });
@@ -36,7 +42,7 @@ Template.picksRoom.events({
   },
 })
 
-Template.picksRoom.onRendered( function() {
+Template.pokeCard.onRendered( function() {
    $(document).ready(function(){
        $('.carousel').carousel({dist: -150, shift: 10});
     });
