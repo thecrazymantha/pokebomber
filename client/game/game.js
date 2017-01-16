@@ -116,7 +116,7 @@ Game = function (){
       Meteor.call('actionInsert', action, function(error, result) {
       // affiche l'erreur à l'utilisateur et s'interrompt
         if (!result){
-          console.log("Erreur envoie action !");
+          // console.log("Erreur envoie action !");
         } else {
           // console.log(result._id);
         }

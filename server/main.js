@@ -94,7 +94,9 @@ function CheckGo() {
           [0,0,0,1,0,1,0,1,0,1,0,1,0,1,0,0,0],
           [0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-        ]
+        ],
+		ended : false,
+		player : [picks[pr].players[0].userID, picks[pr].players[1].userID],
       });
       
       var p1 = Players.insert({
@@ -127,7 +129,6 @@ function CheckGo() {
         orient: 2
       });
       
-      Games.update(gameID, {$set: {"player" : [p1, p2]}});
       Picks.remove(picks[pr]._id);
     }
   }
@@ -135,8 +136,24 @@ function CheckGo() {
 
 
 function GameLoop () {
+  updateEndGame();
   updateBombes();
   updatePlayers();
+}
+
+function updateEndGame(){
+  var games = Games.find({"ended": false}).fetch();
+
+  for (var g in games){
+	  var players = Players.find({"gameID": games[g]._id, "alive": true}).fetch();
+
+	  if (players.length == 1){
+		Games.update(games[g]._id, {$set:{
+		  "ended" : true,
+		  "winner" : players[0]._id,
+		}});
+	  }
+  }
 }
 
 // --- BOMBES --- //
@@ -160,9 +177,11 @@ function boum(bombe){
   var game = Games.findOne(bombe.gameID);
   var rMax = 2;
   var rTop = rBot = rL = rR = 1;
-  var ended = false;
+  
+  hit(game, bombe.x, bombe.y);
   
   // Explosion Top
+  var ended = false;
   while (!ended && rTop <= rMax){
     if (hit(game, bombe.x, bombe.y - rTop)){
       ended = true;
@@ -223,7 +242,6 @@ function hit(game, x, y){
   
   // Players
   var players = Players.find({"gameID": game._id, "alive": true}).fetch();
-  var countAlive = 0;
   for (var p in players){
     if (Math.round(players[p].x) == x && Math.round(players[p].y) == y){
       Players.update(players[p]._id, {$set:{
@@ -231,13 +249,6 @@ function hit(game, x, y){
         }
       });
     }
-    countAlive ++;
-  }
-  
-  if (countAlive <= 1){
-    Games.update(game._id, {$set:{
-      "ended" : true
-    }});
   }
   
   return false;
