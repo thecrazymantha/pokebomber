@@ -1,5 +1,5 @@
 // on the client
-Template.gamesstat.onRendered(function(){
+Template.stats.onRendered(function(){
   console.log("test");
   $.ajax({
     url: 'http://localhost:3000/games',

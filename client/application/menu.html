@@ -1,47 +1,12 @@
 <template name="menu">
-
-
-
-  <!--  <nav class="navbar navbar-default  am-top-header" >-->
-
   <div class="panel panel-primary">
     <div class="panel-body">
       <ul class="nav nav-pills nav-justified">
-        <li role="presentation" class="{{#if isCurrentPage 'gamesstat'}}active{{/if}}"><a href="{{pathFor route='gamesstat'}}">Général</a></li>
+        <li role="presentation" class="{{#if isCurrentPage 'stats'}}active{{/if}}"><a href="{{pathFor route='stats'}}">Général</a></li>
         <li role="presentation" class="{{#if isCurrentPage 'gameStats'}}active{{/if}}"><a href="{{pathFor route='gameStats'}}">Parties</a></li>
         <li role="presentation" class="{{#if isCurrentPage 'playerStats'}}active{{/if}}" ><a href="{{pathFor route='playerStats'}}">Profile</a></li>
         <li role="presentation" class="{{#if isCurrentPage 'rank'}}active{{/if}}"><a href="{{pathFor route='rank'}}">Classement</a></li>
       </ul>
     </div>
-
   </div>
-
-<!--
-  <ul class="nav nav-tabs nav-justified">
-    <li role="presentation" class="active"><a href="{{pathFor route='launcher'}}">Général</a></li>
-    <li role="presentation"><a href="{{pathFor route='gameStats'}}">Parties</a></li>
-    <li role="presentation"><a href="{{pathFor route='playerStats'}}">Profile</a></li>
-    <li role="presentation"><a href="{{pathFor route='rank'}}">Classement</a></li>
-  </ul>
--->
-
 </template>
-
-<!--fin -->
-
-<!-- Pour l'ajout d'un menu d�roulant
-<li class="dropdown">
-<a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Services
-<span class="angle-down s7-angle-down" aria-hidden="true"></span>
-</a>
-<ul role="menu" class="dropdown-menu">
-<li><a href="{{pathFor route='tutorial'}}">Tutorial</a></li>
-<li><a href="{{pathFor route='downloads'}}">Downloads</a></li>
-</ul>
-</li>
--->
-
-<!-- tom start-->
-
-
-<!-- tom end-->
