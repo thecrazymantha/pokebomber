@@ -3,6 +3,7 @@
     <div class="nav-wrapper container">
       <a href="/" class="brand-logo black-text">PokeBomber</a>
       <ul id="nav-mobile" class="right hide-on-med-and-down black-text">
+        <li><a href="{{pathFor 'stats'}}" class="waves-effect waves-light btn">Stats</a></li>
         {{#if isConnected}}
           <li><a href="/selectMode" class="waves-effect waves-light btn">Start !</a></li>
           <li>{{> atNavButton}}</li>
@@ -10,7 +11,7 @@
       </ul>
     </div>
   </nav>
-  
+
   {{> yield}}
-  
+
 </template>
