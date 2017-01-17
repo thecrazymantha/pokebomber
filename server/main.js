@@ -114,7 +114,6 @@ function hit(game, x, y){
     }});
 
     console.log("t'es mort");
-    game.init();
 
   }
 
