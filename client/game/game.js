@@ -3,7 +3,6 @@ Template.game.onRendered(function(){
 });
 
 Game = function (){
-  // var data = Games.find({player.userID : Meteor.userID}).fetch()[0];
   var data;
   var players;
   var balls;
@@ -95,7 +94,7 @@ Game = function (){
     
     var action = {
       gameID : data._id,
-      userID : 0,
+      userID : Meteor.userId(),
       axeX : 0,
       axeY : 0,
       bombe: inputBombe
@@ -117,7 +116,7 @@ Game = function (){
       Meteor.call('actionInsert', action, function(error, result) {
       // affiche l'erreur à l'utilisateur et s'interrompt
         if (!result){
-          console.log("Erreur envoie action !");
+          // console.log("Erreur envoie action !");
         } else {
           // console.log(result._id);
         }
