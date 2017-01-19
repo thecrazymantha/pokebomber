@@ -1,9 +1,9 @@
 # Pokebomber
 Pokebomber est un projet Meteor faisant appelle à l'API REST. Il est décomposé en deux parties: un jeu vidéo inspiré du jeu Bombermam (100% Meteor) et une partie statistique ( interface Meteor et requête en REST).
 
-L'idée initiale étant de faire un projet pour chaque partie (elles sont indépendantes), il a été préféré de les joindre dans un "git" commun pour plus de facilité de déploiement.
+L'idée initiale était de faire un projet pour chaque partie (elles sont indépendantes), il a été préféré de les joindre dans un "git" commun pour plus de facilité de déploiement.
 
-Ce projet a été réalisé dans le cadre du module AOS de Master 2 MIAGE de l'université de Paris-Saclay. Les étudiants du groupe de travail sont Thomas BERRIAU, Jeremy CHEVRIER et Matthieu MERCIER.
+Ce projet a été réalisé dans le cadre du module AOS de Master 2 MIAGE de l'université de Paris-Saclay. Les étudiants du groupe de travail sont Thomas BERRIAU, Jérémy CHEVRIER et Matthieu MERCIER.
 
 ## Guide meteor
 Pour l'utilisation du projet il est nécessaire d'installer Meteor 
@@ -13,7 +13,11 @@ Ce guide est intéressant pour découvrir le fonctionnement et l'utilisation de 
 `http://fr.discovermeteor.com/`
 
 ## Lancement et utilisation du projet
-Pour lancer le projet en local il faut executer la commande suivante:
+Récupérer le projet :
+* allez dans un espace de travail via la console 
+* cloner le projet pokebomber : `git clone https://github.com/Makeuu/pokebomber.git`
+* entrer dans le dossier pokebomber
+* lancer le projet en local en executant la commande suivante:
 `meteor`
 
 Meteor lance le serveur et la base Mongo DB lié au projet.
