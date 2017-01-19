@@ -24,14 +24,14 @@ function CheckGo() {
         });
         Queue.remove(players[j]._id);
       }
-      
+
       Picks.insert({
         players : pls
       });
-      
+
     }
   }
-  
+
   // Check Start Game
   var picks = Picks.find().fetch();
   for(var pr in picks){
@@ -41,7 +41,7 @@ function CheckGo() {
         isRDY = false;
       }
     }
-    
+
     if (isRDY){
       var gameID = Games.insert({
         time : 0,
@@ -98,7 +98,7 @@ function CheckGo() {
 		ended : false,
 		player : [picks[pr].players[0].userID, picks[pr].players[1].userID],
       });
-      
+
       var p1 = Players.insert({
         userID : picks[pr].players[0].userID,
         gameID : gameID,
@@ -113,7 +113,7 @@ function CheckGo() {
         alive : true,
         orient: 2
       });
-      
+
       var p2 = Players.insert({
         userID : picks[pr].players[1].userID,
         gameID : gameID,
@@ -128,7 +128,7 @@ function CheckGo() {
         alive : true,
         orient: 2
       });
-      
+
       Picks.remove(picks[pr]._id);
     }
   }
@@ -150,7 +150,7 @@ function updateEndGame(){
 	  if (players.length == 1){
 		Games.update(games[g]._id, {$set:{
 		  "ended" : true,
-		  "winner" : players[0]._id,
+		  "winner" : players[0].userID,
 		}});
 	  }
   }
@@ -177,9 +177,9 @@ function boum(bombe){
   var game = Games.findOne(bombe.gameID);
   var rMax = 2;
   var rTop = rBot = rL = rR = 1;
-  
+
   hit(game, bombe.x, bombe.y);
-  
+
   // Explosion Top
   var ended = false;
   while (!ended && rTop <= rMax){

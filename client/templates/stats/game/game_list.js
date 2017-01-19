@@ -1,11 +1,29 @@
+Template.gameList.onRendered(function(){
+  $.ajax({
+    url: 'http://localhost:3000/games/',
+    type: 'GET',
+    dataType:'json',
+    success:function(data){
+      $.map(data, function(el) {
+        var li = document.createElement("a");
+        li.appendChild(document.createTextNode(el._id));
+        document.querySelector('#gameslist').appendChild(li);
+        li.classList.add("list-group-item");
+        li.classList.add("voir");
+      });
+    }
+  });
+});
+
+
 // on the client
 
-Template.gameItem.events({
+Template.gameList.events({
   'click .voir': function(e) {
     e.preventDefault();
 
     //méthode REST
-    var gameId=this._id;
+    var gameId = e.currentTarget.innerHTML;
     var timeUrl="http://localhost:3000/games/"+gameId+"/time";
     var winnerUrl="http://localhost:3000/games/"+gameId+"/winner";
 
@@ -29,7 +47,7 @@ Template.gameItem.events({
       dataType:'json',
       success:function(data){
         $.map(data, function(el) {
-          winner=el.winner;
+          winner = el.username;
         });
         document.querySelector('#winner').innerHTML = winner;
       }

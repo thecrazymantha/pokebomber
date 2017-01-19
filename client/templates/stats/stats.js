@@ -10,7 +10,6 @@ Template.stats.onRendered(function(){
       /*Boucle sur l'ensemble des parties*/
       $.map(data, function(el) {
         /*Traitement par partie*/
-        console.log(el);
         totaltime += el.time;
         /*Nombre de parties*/
       });

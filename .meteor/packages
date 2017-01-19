@@ -30,3 +30,4 @@ accounts-password
 accounts-base
 materialize:materialize@=0.97.6
 useraccounts:materialize
+chart:chart
