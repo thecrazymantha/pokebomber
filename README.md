@@ -12,6 +12,7 @@ Ce guide est intéressant pour découvrir le fonctionnement et l'utilisation de 
 ## Lancement et utilisation du projet
 Pour lancer le projet en local il faut executer la commande suivante:
 `meteor`
+
 Meteor lance le serveur et la base Mongo DB lié au projet.
 L'index est disponible à la page
 `http://localhost:3000/`
