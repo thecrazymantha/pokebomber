@@ -1,5 +1,8 @@
 # Pokebomber
 Pokebomber est un projet Meteor faisant appelle à l'API REST. Il est décomposé en deux parties: un jeu vidéo inspiré du jeu Bombermam (100% Meteor) et une partie statistique ( interface Meteor et requête en REST).
+
+L'idée initiale étant de faire un projet pour chaque partie (elles sont indépendantes), il a été préféré de les joindre dans un "git" commun pour plus de facilité de déploiement.
+
 Ce projet a été réalisé dans le cadre du module AOS de Master 2 MIAGE de l'université de Paris-Saclay. Les étudiants du groupe de travail sont Thomas BERRIAU, Jeremy CHEVRIER et Matthieu MERCIER.
 
 ## Guide meteor
