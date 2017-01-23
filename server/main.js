@@ -109,7 +109,7 @@ function CheckGo() {
         y : 1,
         nextX : 1,
         nextY : 1,
-        speed : 2,
+        speed : 4,
         alive : true,
         orient: 2
       });
@@ -124,7 +124,7 @@ function CheckGo() {
         y : 9,
         nextX : 15,
         nextY : 9,
-        speed : 2,
+        speed : 4,
         alive : true,
         orient: 2
       });
@@ -228,7 +228,7 @@ function boum(bombe){
 
 function hit(game, x, y){
   // Vérification Map
-  if (x <= 0 || x >= 15 || y <= 0 || y >= 9) return true;
+  if (x <= 0 || x > 15 || y <= 0 || y > 9) return true;
 
   // Vérification Mur
   if (game.wall[y][x]) return true;
