@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-var dt = 10;
+var dt = 15;
 var waitingM1 = [];
 
 Meteor.startup(() => {
-  Meteor.setInterval(GameLoop, dt);
-  Meteor.setInterval(CheckGo, dt);
+  Meteor.setTimeout(GameLoop, dt);
+  Meteor.setTimeout(CheckGo, dt);
 });
 
 // --- MatchMaking --- //
@@ -43,6 +43,7 @@ function CheckGo() {
     }
 
     if (isRDY){
+      Picks.remove(picks[pr]._id);
       var gameID = Games.insert({
         time : 0,
         map : [
@@ -95,8 +96,7 @@ function CheckGo() {
           [0,0,0,1,1,1,1,1,1,1,1,1,1,1,0,0,0],
           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
         ],
-		ended : false,
-		player : [picks[pr].players[0].userID, picks[pr].players[1].userID],
+        player : [picks[pr].players[0].userID, picks[pr].players[1].userID],
       });
 
       var p1 = Players.insert({
@@ -109,7 +109,7 @@ function CheckGo() {
         y : 1,
         nextX : 1,
         nextY : 1,
-        speed : 0.05,
+        speed : 2,
         alive : true,
         orient: 2
       });
@@ -124,14 +124,18 @@ function CheckGo() {
         y : 9,
         nextX : 15,
         nextY : 9,
-        speed : 0.05,
+        speed : 2,
         alive : true,
         orient: 2
       });
-
-      Picks.remove(picks[pr]._id);
+	  
+	  Games.update(gameID, {
+		  $set: { ended : false}
+	  });
     }
   }
+  
+  Meteor.setTimeout(CheckGo, dt);
 }
 
 
@@ -139,6 +143,7 @@ function GameLoop () {
   updateEndGame();
   updateBombes();
   updatePlayers();
+  Meteor.setTimeout(GameLoop, dt);
 }
 
 function updateEndGame(){
@@ -153,6 +158,10 @@ function updateEndGame(){
 		  "winner" : players[0].userID,
 		}});
 	  }
+    
+    Games.update(games[g]._id, {$set:{
+		  "time" : games[g].time + dt/1000,
+		}});
   }
 }
 
@@ -265,17 +274,17 @@ function updatePlayers(){
     var moveY = players[p].nextY - players[p].lastY;
 
     if (moveX != 0){
-      players[p].x += players[p].speed*moveX;
+      players[p].x += players[p].speed*moveX*(dt/1000);
 
-      if (Math.abs(players[p].nextX - players[p].x) <= players[p].speed/2){
+      if (Math.abs(players[p].nextX - players[p].x) <= players[p].speed/2*(dt/1000)){
         players[p].x = players[p].lastX = players[p].nextX;
       }
     }
 
     if (moveY != 0){
-      players[p].y += players[p].speed*moveY;
+      players[p].y += players[p].speed*moveY*(dt/1000);
 
-      if (Math.abs(players[p].nextY - players[p].y) <= players[p].speed/2){
+      if (Math.abs(players[p].nextY - players[p].y) <= players[p].speed/2*(dt/1000)){
         players[p].y = players[p].lastY = players[p].nextY;
       }
     }
