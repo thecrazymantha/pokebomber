@@ -152,11 +152,17 @@ function updateEndGame(){
   for (var g in games){
 	  var players = Players.find({"gameID": games[g]._id, "alive": true}).fetch();
 
-	  if (players.length == 1){
-		Games.update(games[g]._id, {$set:{
-		  "ended" : true,
-		  "winner" : players[0].userID,
-		}});
+	  if (players.length <= 1){
+      if (players.length == 0){
+        Games.update(games[g]._id, {$set:{
+          "ended" : true,
+        }});
+      } else {
+        Games.update(games[g]._id, {$set:{
+          "ended" : true,
+          "winner" : players[0].userID,
+        }});
+      }
 	  }
     
     Games.update(games[g]._id, {$set:{

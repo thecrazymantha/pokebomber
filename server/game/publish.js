@@ -7,7 +7,7 @@ Meteor.publish('bombes', function() {
   
   if (g == null) return Bombes.find(0);
   
-  return Bombes.find({"gameID" : g._id});
+  return Bombes.find({"gameID" : g._id}, {time: 0});
 });
 
 Meteor.publish('players', function() {
