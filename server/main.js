@@ -128,13 +128,13 @@ function CheckGo() {
         alive : true,
         orient: 2
       });
-	  
+
 	  Games.update(gameID, {
 		  $set: { ended : false}
 	  });
     }
   }
-  
+
   Meteor.setTimeout(CheckGo, dt);
 }
 
@@ -164,7 +164,7 @@ function updateEndGame(){
         }});
       }
 	  }
-    
+
     Games.update(games[g]._id, {$set:{
 		  "time" : games[g].time + dt/1000,
 		}});
@@ -188,7 +188,6 @@ function updateBombes(){
 
 function boum(bombe){
   Bombes.remove(bombe._id);
-  console.log("Boum !");
   var game = Games.findOne(bombe.gameID);
   var rMax = 2;
   var rTop = rBot = rL = rR = 1;
